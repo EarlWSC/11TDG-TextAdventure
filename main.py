@@ -6,33 +6,41 @@ QFORMAT_3 = "{}\nA. {} B. {} C. {}\nDecision Here: "
 QFORMAT_4 = "{}\nA. {} B.{} C. {} D. {}\nDecision Here: "
 
 # Prompts/ Questions/ Outcomes/ Endings
-INTRO_PROMPTS = ["Do you have what it takes to survive?",
-                 #1
-                 "Would you like a tutorial on how to play Survival of The Isle before you are left to die?",
-                 #2 
-                 "The decisions will be given out like this.\n",
-                 #3
-                 "It can either be 2, 3 or 4 decisions like so. Do you understand?",
-                 #4 
-                 "When given a prompt like this with no questions, it will wait for you to press ENTER key. Please do that now.",
-                 #5
-                 "To select an answer, a word or a sentence will be in CAPITAL letters to indicate the possible answers.",]
+IntroPrompts = {
+    
+    "Welcome": ["Do you have what it takes to survive?", 
+                "Would you like a tutorial on how to play Survival of The Isle before you are left to die?",
+                "Let's get to it... Your Journey begins now (PRESS ENTER TO CONTINUE)"],
+                
+    "Tutorial":["The decisions will be given out like this.\n",
+               "It can either be 2, 3 or 4 decisions like so. Do you understand?",
+               "When given a prompt like this with no questions, it will wait for you to press ENTER key. Please do that now.",
+               "To select an answer, a word or a sentence will be in CAPITAL letters to indicate the possible answers."]
+            
+}
+Sector1Prompts = {
+   
+   "Planewreck": ["You survived a plane crash, and was washed ashore on an island with an inflatable raft.",
+                  "You decide whether to stay in the raft or explore. Do you...",
+                  "You decide to wait out for longer.", 
+                  "It is getting dark. Do you...",
+                  "You decide to remain in the plane.",
+                  "Now you're starting to become hungry. Do you...",
+                  "You're starting to suffer from starvation now. Do you...",],
 
-PROMPTS_1 = ["You survived a plane crash, and was washed ashore on an island with an inflatable raft. You decide whether to stay in the raft or explore. Do you...",
-             #1 
-             "You decide to explore the island for whatever can help you temporarily. You suddenly stumble upon an array of small wooden houses. Do you...",
-             #2
-             "After that, you managed to stumble upon an abandoned lighthouse after trekking for a while. Do you...",
-             #3
-             "You decide to remain in the boat. Now you're starting to become hungry. Do you...",
-             #4
-             "You decide to wait out for longer. It is getting dark. Do you...",
-             #5
-             "You're starting to suffer from starvation. Do you...",
-             #6
-             "You decide to find food. Do you...",]
+   "BeachCave": ["You decide to explore the island for whatever can help you temporarily.", 
+                 "You suddenly stumble upon a large cave that seems to lead to somewhere.. Do you...",],
 
-PROMPTS_2 = ["You decide to either continue on the forest, or the houses, or the lighthouse. Do you...",
+   "Lighthouse": ["After that, you managed to stumble upon an abandoned lighthouse after trekking for a while. Do you...",],
+
+   "Wilderness": ["You decide to find food. Do you...",],
+
+}
+Sector2Prompts = {
+   
+}
+
+PROMPTS_2 = ["You decide to either continue on the forest, or back to the cave, or the lighthouse. Do you...",
              #1
              "You decide to sleep since its become dark again. You then managed to wake up in the middle of the night. Do you...", 
              #2
@@ -45,6 +53,7 @@ PROMPTS_2 = ["You decide to either continue on the forest, or the houses, or the
              "You're currently on the run. Do you plan to hide under the bushes or behind a tree?",
              #6
              "You decide whether to fix the plane with the tools and supplies you have, or head back to the lighthouse",]
+            #7
 
 OUTCOMES = ["You decide to scavenge through the houses for some supplies.",
             #1
@@ -73,6 +82,7 @@ OUTCOMES = ["You decide to scavenge through the houses for some supplies.",
             "You see a dense forest throughout your way.",
             #13
             "You realize you're hungry and you need food",]
+            #14
 
 OUTCOMES_2 = ["You realize that you do not have suffiecient items, so you decide to go back to the houses to look for something.",
               #1
@@ -97,35 +107,37 @@ OUTCOMES_2 = ["You realize that you do not have suffiecient items, so you decide
               "You decide to continue to the forest.",
               #11
               "You decide to go towards the houses by the beach.",]
-            
+              #12
 
 OUTCOMES_3 = ["You decide to sleep since its become dark again.",
-              #
+              #1
               "You decide to not to use to lighthouse and try to explore for more.",
-              #
+              #2
               "You decide to continue sleeping and not fix the lighthouse.",
-              #
+              #3
               "You manage to find an abandoned plane after exploring for a while.",
-              #
+              #4
               "You wake up and decide to go exploring again.",
-              #
+              #5
               "As you were exiting, you hear footsteps outside.",
-              #
+              #6
               "You manage to find another beach upon exiting the forest. You also find a boathouse.",]
+              #7
 
 ENDINGS = ["You have died from starvation. Game Over.",
           #1
           "You failed to capture as you slowly die of hunger. Game Over.",
-          #
+          #2
           "You managed to pace towards the houses, but suddenly, you feel extremely tired as you turn around and see the thing getting closer. Game Over",
-          #
+          #3
           "You managed to pace towards the houses, but suddenly, you feel extremely tired as you turn around and see the thing getting closer. Game Over",
-          #
+          #4
           "You managed to put up a fight against it, but suddenly, you feel something stab deep in your chest. Game Over",
-          #
+          #5
           "You have managed to fix the plane as the sun begins to rise. You successfully take off as you fly away. You've unlocked the best ending.",
-          #
+          #6
           "You see what appears to be a group of guards aiming rifles at you. Where did they come from? Game Over",]
+          #7
 
 Q_INTRO = [["Yes","No","Dunno"],
            #1
@@ -147,24 +159,63 @@ SHIPWRECK_ANS =  [["stay", "explore"],
               ["wait longer", "look for food"]]
 BEACH_CAVE_ANS = [["go back", "explore", "scavenge"]]
 LIGHTHOUSE_ANS = [["explore", "stay"]]
-S_OPTIONS = [["a", "b"],
-             ["a", "b", "c"],
-             ["a", "b", "c", "d"]]
+S_OPTIONS = ["a", "b", "c", "d"]
 
 # Functions
 run = "no"
 running_level = 1
 Health = 5
 
-# _ INTRO _
-# INTRO
-#  _ INTRO _ 
-# INTRO
-#  _ INTRO _ 
-# INTRO
-#  _ INTRO _ 
-print("Welcome to our game:")
-print(r"""  
+# --------------------------- INTRO -------------------------------
+print("Welcome to our game:\n SURVIVAL - OF - THE - ISLE")
+
+#Checks if they are confident in winning or not
+confidence = input(QFORMAT_3.format((IntroPrompts["Welcome"][0]),Q_INTRO[0][0],Q_INTRO[0][1],Q_INTRO[0][2])).lower()
+if confidence == INTRO_ANS[0][0] or S_OPTIONS[0]:
+    input("Well well... \nYour decisions will be put to the test... (PRESS ENTER TO CONTINUE)")
+elif confidence == INTRO_ANS[0][1] or S_OPTIONS[1]:
+    input("Haha! You're a fool for playing... \nYou will face certain death, I'm sure... (PRESS ENTER TO CONTINUE)")
+elif confidence == INTRO_ANS[0][2] or S_OPTIONS[2]:
+    input("Ha! You're not so sure huh... \nYou're going to die here, I know of that now...(PRESS ENTER TO CONTINUE)")
+
+#Do you want a tutorial?
+tutorial = input(QFORMAT_2.format((IntroPrompts["Welcome"][1]),Q_INTRO[0][0],Q_INTRO[0][1])).lower()
+if tutorial == INTRO_ANS[0][0]:
+    input("\nGood choice... Here's how it will work. (PRESS ENTER TO CONTINUE)")
+    run = "Yes".lower()
+elif tutorial ==INTRO_ANS[0][1]:
+    input("\nWow.. I must say, you're brave..\nGood luck on survivng, you will need it. (PRESS ENTER TO CONTINUE)")
+
+#Tutorial in Progress - How decisions are given to you
+while run == "Yes".lower():
+  input("Your objective of the game is to survive and escape an island.. You are unaware of your surroundings and have different choices to make. (PRESS ENTER TO CONTINUE)\n")
+  input(QFORMAT_4.format((IntroPrompts["Tutorial"][0]),Q_INTRO[1][0],Q_INTRO[1][1],Q_INTRO[1][2],Q_INTRO[1][3]))
+  understand = input(QFORMAT_3.format(( IntroPrompts["Tutorial"][1]),Q_INTRO[0][0],Q_INTRO[0][1],Q_INTRO[0][2])).lower()
+  if understand == INTRO_ANS[0][0]:
+    input("Wonderful, you may be alive by the end of the night, but I cannot guarantee your survival. (PRESS ENTER TO CONTINUE)")
+  elif understand == INTRO_ANS[0][1]:
+    input("Wow.. such easy instructions and you fail to understand?\n Let's try that again... (PRESS ENTER TO CONTINUE)")
+    continue
+  elif understand == INTRO_ANS[0][2]:
+    input("Ha! You're not so sure huh... \nYou're going to die here, I know of that now...\n I will give you the instructions one more time...\n (PRESS ENTER TO CONTINUE)")
+    continue
+
+#Tutorial in Progress - How to go through prompts and how to answer decisions
+  input("So, {}".format((IntroPrompts["Tutorial"][2])))
+  understand = input(QFORMAT_3.format((IntroPrompts["Tutorial"][3]),Q_INTRO[2][0],Q_INTRO[2][1],Q_INTRO[2][2])).lower()
+  if understand == INTRO_ANS[0][0]:
+    input("Wonderful, you may be alive by the end of the night, but I cannot guarantee your survival.")
+    break
+  elif understand == INTRO_ANS[0][1]:
+    input("Wow.. such easy instructions and you fail to understand?\n Let's try that again... (PRESS ENTER TO CONTINUE)")
+    continue
+  elif understand == INTRO_ANS[0][2]:
+    input("Ha! You're not so sure huh... \nYou're going to die here, I know of that now...\n I will give you the instructions one more time...\n (PRESS ENTER TO CONTINUE)")
+    continue
+  
+#Are you ready to play the game?
+confirm = input(IntroPrompts["Welcome"][2])
+input(r"""  
   ██████  █    ██  ██▀███   ██▒   █▓ ██▓ ██▒   █▓ ▄▄▄       ██▓        ▒█████    █████▒   ▄▄▄█████▓ ██░ ██ ▓█████     ██▓  ██████  ██▓    ▓█████ 
 ▒██    ▒  ██  ▓██▒▓██ ▒ ██▒▓██░   █▒▓██▒▓██░   █▒▒████▄    ▓██▒       ▒██▒  ██▒▓██   ▒    ▓  ██▒ ▓▒▓██░ ██▒▓█   ▀    ▓██▒▒██    ▒ ▓██▒    ▓█   ▀ 
 ░ ▓██▄   ▓██  ▒██░▓██ ░▄█ ▒ ▓██  █▒░▒██▒ ▓██  █▒░▒██  ▀█▄  ▒██░       ▒██░  ██▒▒████ ░    ▒ ▓██░ ▒░▒██▀▀██░▒███      ▒██▒░ ▓██▄   ▒██░    ▒███   
@@ -175,51 +226,11 @@ print(r"""
 ░  ░  ░   ░░░ ░ ░   ░░   ░      ░░   ▒ ░     ░░    ░   ▒     ░ ░      ░ ░ ░ ▒   ░ ░         ░       ░  ░░ ░   ░       ▒ ░░  ░  ░    ░ ░      ░   
       ░     ░        ░           ░   ░        ░        ░  ░    ░  ░       ░ ░                       ░  ░  ░   ░  ░    ░        ░      ░  ░   ░  ░
                                 ░            ░                                                                                                   """)
-confidence = input(QFORMAT_3.format(INTRO_PROMPTS[0],Q_INTRO[0][0],Q_INTRO[0][1],Q_INTRO[0][2])).lower()
-if confidence == INTRO_ANS[0][0]:
-    input("Well well... \nYour decisions will be put to the test... (PRESS ENTER TO CONTINUE)")
-elif confidence == INTRO_ANS[0][1]:
-    input("Haha! You're a fool for playing... \nYou will face certain death, I'm sure... (PRESS ENTER TO CONTINUE)")
-elif confidence == INTRO_ANS[0][2]:
-    input("Ha! You're not so sure huh... \nYou're going to die here, I know of that now...(PRESS ENTER TO CONTINUE)")
+# // PLANEWRECK PHASE \\
+input(Sector1Prompts["Planewreck"][0])
+input(QFORMAT_2.format((Sector1Prompts["Planewreck"][1]),Q_SHIPWRECK[0][0],Q_SHIPWRECK[0][1]))
+# // BEACH CAVE PHASE \\
 
-tutorial = input(QFORMAT_2.format(INTRO_PROMPTS[1],Q_INTRO[0][0],Q_INTRO[0][1])).lower()
-if tutorial == INTRO_ANS[0][0]:
-    input("\nGood choice... Here's how it will work. (PRESS ENTER TO CONTINUE)")
-    run = "Yes".lower()
-elif tutorial ==INTRO_ANS[0][1]:
-    input("\nWow.. I must say, you're brave..\nGood luck on survivng, you will need it. (PRESS ENTER TO CONTINUE)")
-
-while run == "Yes".lower():
-  input("Your objective of the game is to survive and escape an island.. You are unaware of your surroundings and have different choices to make. (PRESS ENTER TO CONTINUE)\n")
-  print(QFORMAT_4.format(INTRO_PROMPTS[2],Q_INTRO[1][0],Q_INTRO[1][1],Q_INTRO[1][2],Q_INTRO[1][3]))
-  understand = input(QFORMAT_3.format(INTRO_PROMPTS[3],Q_INTRO[0][0],Q_INTRO[0][1],Q_INTRO[0][2])).lower()
-  if understand == INTRO_ANS[0][0]:
-    input("Wonderful, you may be alive by the end of the night, but I cannot guarantee your survival. (PRESS ENTER TO CONTINUE)")
-  elif understand == INTRO_ANS[0][1]:
-    input("Wow.. such easy instructions and you fail to understand?\n Let's try that again... (PRESS ENTER TO CONTINUE)")
-    continue
-  elif understand == INTRO_ANS[0][2]:
-    input("Ha! You're not so sure huh... \nYou're going to die here, I know of that now...\n I will give you the instructions one more time...\n (PRESS ENTER TO CONTINUE)")
-    continue
-
-
-  input("So,{}".format(INTRO_PROMPTS[4]))
-  understand = input(QFORMAT_3.format(INTRO_PROMPTS[5],Q_INTRO[2][0],Q_INTRO[2][1],Q_INTRO[2][2]))
-  if understand == INTRO_ANS[0][0]:
-    input("Wonderful, you may be alive by the end of the night, but I cannot guarantee your survival. ")
-  elif understand == INTRO_ANS[0][1]:
-    input("Wow.. such easy instructions and you fail to understand?\n Let's try that again... (PRESS ENTER TO CONTINUE)")
-    continue
-  elif understand == INTRO_ANS[0][2]:
-    input("Ha! You're not so sure huh... \nYou're going to die here, I know of that now...\n I will give you the instructions one more time...\n (PRESS ENTER TO CONTINUE)")
-    continue
-  
-
-# SHIPWRECK PHASE
-
-# BEACH CAVE PHASE
-
-# LIGHTHOUSE PHASE
+# // LIGHTHOUSE PHASE \\
 
 
