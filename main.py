@@ -25,39 +25,48 @@ SHORT_OPTIONS = ["a", "b", "c", "d"]
 # // MAIN GAME DICTIONARY \\
 #Planewreck part; Stay or Explore?
 Intro_Scenario = {
-   "Planewreck": "You survived a plane crash, and was washed ashore on an island with an inflatable raft.",
-    "Decision": "You decide whether to stay in the raft or explore. Do you...", 
+   "Planewreck": "\nYou survived a plane crash, and was washed ashore on an island with an inflatable raft.",
+    "Decision": "\nYou decide whether to stay in the raft or explore. Do you...", 
     "Choices": ["STAY on the raft and wait to be rescued...", "Leave and EXPLORE into the unknown and potentially deadly island..."],
     "Answers": ["stay", "explore"],
     "Outcomes": ["You decided to stay and wait to be rescued... Time shall pass as you know it will take a while...", "You decide to leave and explore into the unknown and potentially deadly island..."],
 }
 #Found Beachcave and Stayed at Raft
 #Go Back, Explore or Scavenge? || 
-Intro_Scenario_1 = {
-   "BeachCave": "You decide to explore the island for whatever can help you temporarily.",
-   "BC_Decision": "You suddenly stumble upon a large cave that seems to lead to somewhere.. Do you...",
+S1_Scenario_1 = {
+   "BeachCave": "\nYou decide to explore the island for whatever can help you temporarily.",
+   "BC_Decision": "\nYou suddenly stumble upon a large cave that seems to lead to somewhere.. Do you...",
    "BC_Choices": ["SCAVENGE through the cave for some supplies.","You decide to keep EXPLORING somewhere else instead.","GO BACK to the boat."],
    "BC_Answers": ["go back", "explore", "scavenge"],
    "BC_Outcomes":["You decide to scavenge through the cave for anything or better, supplies.","You decide to keep exploring instead.","You decide to head back to the boat."],
-   "RaftAgain": "You decide to remain in the boat. Now you're starting to become hungry. Do you...",
-   "R_Decisions": [],
-   "R_Choices":[],
+
+   "Raft": "You decide to remain in the boat. Now you're starting to become hungry. Do you...",
+   "R_Choices":["WAIT for longer", "FIND something to eat."],
+   "R_Outcomes":["You decide to find food"],
+
+   "Raft_2": "You're starting to suffer from starvation now. Do you...",
+   "R2_Choices":["Wait for longer","Start to look for food"],
+   "R2_Outcomes": ["Ending 1","You decide to find food"],
+   
+   "Food": "You explore in order to find food. You have 2 choices. Do you...",
+   "Food_Choices": ["Go towards a coconut tree", "Find something else."],
+   "Food_Outcomes": ["You decide to get a coconut from a tree.","BeachCave"],
 }
-Intro_Scenario_2 = {
-   "Lighthouse"
+S1_Scenario_2 = {
+   "Lighthouse": ["After that, you managed to stumble upon an abandoned lighthouse after trekking for a while. Do you..."],
+   "L_Decision":["omaygot"],
 }
-Intro_Scenario_3 = {
+S1_Scenario_3 = {
    
 }
-Intro_Scenario_4 = {
+S1_Scenario_4 = {
    
 }
-Intro_Scenario_5 = {
+S1_Scenario_5 = {
    
 }   
                   #"You decide to wait out for longer.", 
                  # "It is getting dark. Do you...",
-                 # "You're starting to suffer from starvation now. Do you...",],
 
    #"Lighthouse": ["After that, you managed to stumble upon an abandoned lighthouse after trekking for a while. Do you...",],
    #"Wilderness": ["You decide to find food. Do you...",],
@@ -170,90 +179,96 @@ ENDINGS = ["You have died from starvation. Game Over.",
               #["wait longer", "look for food"]
 BEACH_CAVE_ANS = [["go back", "explore", "scavenge"]]
 LIGHTHOUSE_ANS = [["explore", "stay"]]
-
+#Scenario Numbers and what they represent:
+#1 - 14 = Planewreck Area
+#15 - 29 = Beachcave Area
+#30 - 44 = Lighthouse Area
+#45 - 59 = Wilderness Area
+#60 - 74 = Unknown for now
+#75 - 89 = Unknown for now
+#90 - 104 = Unknown for now
+#105 - 119 = Unknown for now
+#120 - 139 = Unknown for now
 
 # Functions
+toolbox = "no"
 run = "no"
 scenario_stages = 1
 Health = 5
 
 # --------------------------- INTRO -------------------------------
-print("Welcome to our game:\n SURVIVAL OF THE ISLE")
-
-#Checks if they are confident in winning or not
-confidence = input(QFORMAT_3.format((IntroPrompts["Welcome"][0]),Q_INTRO[0][0],Q_INTRO[0][1],Q_INTRO[0][2])).lower()
-if confidence == INTRO_ANS[0].lower() or SHORT_OPTIONS[0].lower():
-    input("Well well... \nYour decisions will be put to the test... (PRESS ENTER TO CONTINUE)")
-elif confidence == INTRO_ANS[1].lower() or SHORT_OPTIONS[1].lower():
-    input("Haha! You're a fool for playing... \nYou will face certain death, I'm sure... (PRESS ENTER TO CONTINUE)")
-elif confidence == INTRO_ANS[2].lower() or SHORT_OPTIONS[2].lower():
-    input("Ha! You're not so sure huh... \nYou're going to die here, I know of that now...(PRESS ENTER TO CONTINUE)")
-
-#Do you want a tutorial?
-tutorial = input(QFORMAT_2.format((IntroPrompts["Welcome"][1]),Q_INTRO[0][0],Q_INTRO[0][1])).lower()
-if tutorial == INTRO_ANS[0].lower() or SHORT_OPTIONS[0].lower():
-    input("\nGood choice... Here's how it will work. (PRESS ENTER TO CONTINUE)")
-    run = "Yes".lower()
-elif tutorial ==INTRO_ANS[1].lower() or SHORT_OPTIONS[1].lower():
-    input("\nWow.. I must say, you're brave..\nGood luck on survivng, you will need it. (PRESS ENTER TO CONTINUE)")
-
-#Tutorial in Progress - How decisions are given to you
-while run == "Yes".lower():
-  input("Your objective of the game is to survive and escape an island.. You are unaware of your surroundings and have different choices to make. (PRESS ENTER TO CONTINUE)\n")
-  input(QFORMAT_4.format((IntroPrompts["Tutorial"][0]),Q_INTRO[1][0],Q_INTRO[1][1],Q_INTRO[1][2],Q_INTRO[1][3]))
-  understand = input(QFORMAT_3.format(( IntroPrompts["Tutorial"][1]),Q_INTRO[0][0],Q_INTRO[0][1],Q_INTRO[0][2])).lower()
-  if understand == INTRO_ANS[0] or SHORT_OPTIONS[0]:
-    input("Wonderful, you may be alive by the end of the night, but I cannot guarantee your survival. (PRESS ENTER TO CONTINUE)")
-  elif understand == INTRO_ANS[1] or SHORT_OPTIONS[1]:
-    input("Wow.. such easy instructions and you fail to understand?\n Let's try that again... (PRESS ENTER TO CONTINUE)")
-    continue
-  elif understand == INTRO_ANS[2] or SHORT_OPTIONS[2]:
-    input("Ha! You're not so sure huh... \nYou're going to die here, I know of that now...\n I will give you the instructions one more time...\n (PRESS ENTER TO CONTINUE)")
-    continue
-
-#Tutorial in Progress - How to go through prompts and how to answer decisions
-  input("So, {}".format((IntroPrompts["Tutorial"][2])))
-  understand = input(QFORMAT_3.format((IntroPrompts["Tutorial"][3]),Q_INTRO[2][0],Q_INTRO[2][1],Q_INTRO[2][2])).lower()
-  if understand == INTRO_ANS[0] or SHORT_OPTIONS[0]:
-    input("Wonderful, you may be alive by the end of the night, but I cannot guarantee your survival.")
-    break
-  elif understand == INTRO_ANS[1] or SHORT_OPTIONS[1]:
-    input("Wow.. such easy instructions and you fail to understand?\n Let's try that again... (PRESS ENTER TO CONTINUE)")
-    continue
-  elif understand == INTRO_ANS[2] or SHORT_OPTIONS[2]:
-    input("Ha! You're not so sure huh... \nYou're going to die here, I know of that now...\n I will give you the instructions one more time...\n (PRESS ENTER TO CONTINUE)")
-    continue
-  
 #Are you ready to play the game?
 confirm = input(IntroPrompts["Welcome"][2])
 input(r"""  
-  ██████  █    ██  ██▀███   ██▒   █▓ ██▓ ██▒   █▓ ▄▄▄       ██▓        ▒█████    █████▒   ▄▄▄█████▓ ██░ ██ ▓█████     ██▓  ██████  ██▓    ▓█████ 
-▒██    ▒  ██  ▓██▒▓██ ▒ ██▒▓██░   █▒▓██▒▓██░   █▒▒████▄    ▓██▒       ▒██▒  ██▒▓██   ▒    ▓  ██▒ ▓▒▓██░ ██▒▓█   ▀    ▓██▒▒██    ▒ ▓██▒    ▓█   ▀ 
-░ ▓██▄   ▓██  ▒██░▓██ ░▄█ ▒ ▓██  █▒░▒██▒ ▓██  █▒░▒██  ▀█▄  ▒██░       ▒██░  ██▒▒████ ░    ▒ ▓██░ ▒░▒██▀▀██░▒███      ▒██▒░ ▓██▄   ▒██░    ▒███   
-  ▒   ██▒▓▓█  ░██░▒██▀▀█▄    ▒██ █░░░██░  ▒██ █░░░██▄▄▄▄██ ▒██░       ▒██   ██░░▓█▒  ░    ░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄    ░██░  ▒   ██▒▒██░    ▒▓█  ▄ 
-▒██████▒▒▒▒█████▓ ░██▓ ▒██▒   ▒▀█░  ░██░   ▒▀█░   ▓█   ▓██▒░██████▒   ░ ████▓▒░░▒█░         ▒██▒ ░ ░▓█▒░██▓░▒████▒   ░██░▒██████▒▒░██████▒░▒████▒
-▒ ▒▓▒ ▒ ░░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░   ░ ▐░  ░▓     ░ ▐░   ▒▒   ▓▒█░░ ▒░▓  ░   ░ ▒░▒░▒░  ▒ ░         ▒ ░░    ▒ ░░▒░▒░░ ▒░ ░   ░▓  ▒ ▒▓▒ ▒ ░░ ▒░▓  ░░░ ▒░ ░
-░ ░▒  ░ ░░░▒░ ░ ░   ░▒ ░ ▒░   ░ ░░   ▒ ░   ░ ░░    ▒   ▒▒ ░░ ░ ▒  ░     ░ ▒ ▒░  ░             ░     ▒ ░▒░ ░ ░ ░  ░    ▒ ░░ ░▒  ░ ░░ ░ ▒  ░ ░ ░  ░
-░  ░  ░   ░░░ ░ ░   ░░   ░      ░░   ▒ ░     ░░    ░   ▒     ░ ░      ░ ░ ░ ▒   ░ ░         ░       ░  ░░ ░   ░       ▒ ░░  ░  ░    ░ ░      ░   
-      ░     ░        ░           ░   ░        ░        ░  ░    ░  ░       ░ ░                       ░  ░  ░   ░  ░    ░        ░      ░  ░   ░  ░
-                                ░            ░                                                                                                   """)
-# // PLANEWRECK PHASE \\
-input("{}".format(Intro_Scenario.get("Planewreck")))
-answer = input(QFORMAT_2.format(Intro_Scenario.get("Decision"),Intro_Scenario["Choices"][0],Intro_Scenario["Choices"][1])).lower()
-#Stay at Raft
-if answer == Intro_Scenario["Answers"][0] or SHORT_OPTIONS[0]:
-   input("{}".format(Intro_Scenario["Outcomes"][0]))
-   scenario_stages = 5
-#Explore into the Island
-elif answer == Intro_Scenario["Answers"][1] or SHORT_OPTIONS[1]:
-   input("{}".format(Intro_Scenario["Outcomes"][1]))
-   scenario_stages = 2
-  
-#Stayed at Raft; Now Hungry
-while scenario_stages < 5:
-   print("Hungry")
-# // BEACH CAVE PHASE \\
+    ██████  █    ██  ██▀███   ██▒   █▓ ██▓ ██▒   █▓ ▄▄▄       ██▓        ▒█████    █████▒   ▄▄▄█████▓ ██░ ██ ▓█████     ██▓  ██████  ██▓    ▓█████ 
+  ▒██    ▒  ██  ▓██▒▓██ ▒ ██▒▓██░   █▒▓██▒▓██░   █▒▒████▄    ▓██▒       ▒██▒  ██▒▓██   ▒    ▓  ██▒ ▓▒▓██░ ██▒▓█   ▀    ▓██▒▒██    ▒ ▓██▒    ▓█   ▀ 
+  ░ ▓██▄   ▓██  ▒██░▓██ ░▄█ ▒ ▓██  █▒░▒██▒ ▓██  █▒░▒██  ▀█▄  ▒██░       ▒██░  ██▒▒████ ░    ▒ ▓██░ ▒░▒██▀▀██░▒███      ▒██▒░ ▓██▄   ▒██░    ▒███   
+    ▒   ██▒▓▓█  ░██░▒██▀▀█▄    ▒██ █░░░██░  ▒██ █░░░██▄▄▄▄██ ▒██░       ▒██   ██░░▓█▒  ░    ░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄    ░██░  ▒   ██▒▒██░    ▒▓█  ▄ 
+  ▒██████▒▒▒▒█████▓ ░██▓ ▒██▒   ▒▀█░  ░██░   ▒▀█░   ▓█   ▓██▒░██████▒   ░ ████▓▒░░▒█░         ▒██▒ ░ ░▓█▒░██▓░▒████▒   ░██░▒██████▒▒░██████▒░▒████▒
+  ▒ ▒▓▒ ▒ ░░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░   ░ ▐░  ░▓     ░ ▐░   ▒▒   ▓▒█░░ ▒░▓  ░   ░ ▒░▒░▒░  ▒ ░         ▒ ░░    ▒ ░░▒░▒░░ ▒░ ░   ░▓  ▒ ▒▓▒ ▒ ░░ ▒░▓  ░░░ ▒░ ░
+  ░ ░▒  ░ ░░░▒░ ░ ░   ░▒ ░ ▒░   ░ ░░   ▒ ░   ░ ░░    ▒   ▒▒ ░░ ░ ▒  ░     ░ ▒ ▒░  ░             ░     ▒ ░▒░ ░ ░ ░  ░    ▒ ░░ ░▒  ░ ░░ ░ ▒  ░ ░ ░  ░
+  ░  ░  ░   ░░░ ░ ░   ░░   ░      ░░   ▒ ░     ░░    ░   ▒     ░ ░      ░ ░ ░ ▒   ░ ░         ░       ░  ░░ ░   ░       ▒ ░░  ░  ░    ░ ░      ░   
+        ░     ░        ░           ░   ░        ░        ░  ░    ░  ░       ░ ░                       ░  ░  ░   ░  ░    ░        ░      ░  ░   ░  ░
+                                  ░            ░                                                                                                   """)
+while scenario_stages >= 1 and scenario_stages <= 14:
+    # // PLANEWRECK PHASE \\
+  input("{}".format(Intro_Scenario.get("Planewreck")))
+  answer = input(QFORMAT_2.format(Intro_Scenario.get("Decision"),Intro_Scenario["Choices"][0],Intro_Scenario["Choices"][1])).lower()
+    # // Stayed at Raft; Now Hungry \\
+  if answer == Intro_Scenario["Answers"][0] or answer == SHORT_OPTIONS[0]:
+    input("{}".format(Intro_Scenario["Outcomes"][0]))
+    scenario_stages = 2
+    while scenario_stages >= 2 and scenario_stages <= 14:
+      answer = input(QFORMAT_2.format(S1_Scenario_1.get("Raft"),S1_Scenario_1["R_Choices"][0],S1_Scenario_1["R_Choices"][1])).lower()
+      #Scavenge
+      if answer == S1_Scenario_1["R_Answers"][0] or answer == SHORT_OPTIONS[0]:
+        input("{}".format(S1_Scenario_1["R_Outcomes"][0]))
+        scenario_stages = 3
+          
+      #Explore deeper
+      elif answer == S1_Scenario_1["R_Answers"][1] or answer == SHORT_OPTIONS[1]:
+        input("{}".format(S1_Scenario_1["R_Outcomes"][1]))
+        scenario_stages = 4
+        break
+    # Explore into the Island
+  elif answer == Intro_Scenario["Answers"][1] or answer == SHORT_OPTIONS[1]:
+    input("{}".format(Intro_Scenario["Outcomes"][1]))
+    scenario_stages = 15
+    break
+    # No answer
+  else:
+    input("You have not placed a valid answer. Try again.")
 
-# // LIGHTHOUSE PHASE \\
+
+      
+  
+      
+
+
+    # // BEACH CAVE PHASE \\
+while scenario_stages >= 15 and scenario_stages <= 29:
+  answer = input(QFORMAT_3.format(S1_Scenario_1.get("BC_Decision"),S1_Scenario_1["BC_Choices"][0],S1_Scenario_1["BC_Choices"][1],S1_Scenario_1["BC_Choices"][2])).lower()
+    #Scavenge
+  if answer == S1_Scenario_1["BC_Answers"][0] or answer == SHORT_OPTIONS[0]:
+    input("{}".format(S1_Scenario_1["BC_Outcomes"][0]))
+    scenario_stages = 16
+    break
+    #Explore deeper
+  elif answer == S1_Scenario_1["BC_Answers"][1] or answer == SHORT_OPTIONS[1]:
+    input("{}".format(S1_Scenario_1["BC_Outcomes"][1]))
+    scenario_stages = 30
+    break
+  #Go back to Raft
+  elif answer == S1_Scenario_1["BC_Answers"][2] or answer == SHORT_OPTIONS[2]:
+    input("{}".format(S1_Scenario_1["BC_Outcomes"][2]))
+    scenario_stages = 2
+    break
+    # No answer
+  else:
+    input("You have not placed a valid answer. Try again.")
+
+
+    # // Acquired Toolbox \\
+    # // LIGHTHOUSE PHASE \\
 
 
