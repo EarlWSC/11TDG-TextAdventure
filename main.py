@@ -198,7 +198,7 @@ Health = 5
 
 # --------------------------- INTRO -------------------------------
 #Are you ready to play the game?
-confirm = input(IntroPrompts["Welcome"][2])
+input(IntroPrompts["Welcome"][2])
 input(r"""  
     ██████  █    ██  ██▀███   ██▒   █▓ ██▓ ██▒   █▓ ▄▄▄       ██▓        ▒█████    █████▒   ▄▄▄█████▓ ██░ ██ ▓█████     ██▓  ██████  ██▓    ▓█████ 
   ▒██    ▒  ██  ▓██▒▓██ ▒ ██▒▓██░   █▒▓██▒▓██░   █▒▒████▄    ▓██▒       ▒██▒  ██▒▓██   ▒    ▓  ██▒ ▓▒▓██░ ██▒▓█   ▀    ▓██▒▒██    ▒ ▓██▒    ▓█   ▀ 
@@ -212,25 +212,30 @@ input(r"""
                                   ░            ░                                                                                                   """)
 while scenario_stages >= 1 and scenario_stages <= 14:
     # // PLANEWRECK PHASE \\
+    #.
   input("{}".format(Intro_Scenario.get("Planewreck")))
   answer = input(QFORMAT_2.format(Intro_Scenario.get("Decision"),Intro_Scenario["Choices"][0],Intro_Scenario["Choices"][1])).lower()
     # // Stayed at Raft; Now Hungry \\
+    #.
   if answer == Intro_Scenario["Answers"][0] or answer == SHORT_OPTIONS[0]:
     input("{}".format(Intro_Scenario["Outcomes"][0]))
     scenario_stages = 2
+    #.
     while scenario_stages >= 2 and scenario_stages <= 14:
       answer = input(QFORMAT_2.format(S1_Scenario_1.get("Raft"),S1_Scenario_1["R_Choices"][0],S1_Scenario_1["R_Choices"][1])).lower()
       #Scavenge
+      #.
       if answer == S1_Scenario_1["R_Answers"][0] or answer == SHORT_OPTIONS[0]:
         input("{}".format(S1_Scenario_1["R_Outcomes"][0]))
-        scenario_stages = 3
-          
+        scenario_stages = 3  
       #Explore deeper
+      #.
       elif answer == S1_Scenario_1["R_Answers"][1] or answer == SHORT_OPTIONS[1]:
         input("{}".format(S1_Scenario_1["R_Outcomes"][1]))
         scenario_stages = 4
         break
     # Explore into the Island
+    #.
   elif answer == Intro_Scenario["Answers"][1] or answer == SHORT_OPTIONS[1]:
     input("{}".format(Intro_Scenario["Outcomes"][1]))
     scenario_stages = 15
