@@ -32,7 +32,7 @@ Intro_Scenario = {
     "Outcomes": ["You decided to stay and wait to be rescued... Time shall pass as you know it will take a while...", "You decide to leave and explore into the unknown and potentially deadly island..."],
 }
 #Found Beachcave and Stayed at Raft
-#Go Back, Explore or Scavenge? || 
+#Go Back, Explore or Scavenge? 
 S1_Scenario_1 = {
    "BeachCave": "\nYou decide to explore the island for whatever can help you temporarily.",
    "BC_Decision": "\nYou suddenly stumble upon a large cave that seems to lead to somewhere.. Do you...",
@@ -42,19 +42,34 @@ S1_Scenario_1 = {
 
    "Raft": "You decide to remain in the boat. Now you're starting to become hungry. Do you...",
    "R_Choices":["WAIT for longer", "FIND something to eat."],
-   "R_Outcomes":["You decide to find food"],
+   "R_Answers":["wait","find"],
+   "R_Outcomes":["Wait at the boat, I canw wait","You decide to find food"],
 
    "Raft_2": "You're starting to suffer from starvation now. Do you...",
-   "R2_Choices":["Wait for longer","Start to look for food"],
-   "R2_Outcomes": ["Ending 1","You decide to find food"],
+   "R2_Choices":["WAIT for longer","START to look for food"],
+   "R2_Answers":["wait","start"],
+   "R2_Outcomes": ["You decided to keep waiting at the boat.","You decide to find food"],
    
    "Food": "You explore in order to find food. You have 2 choices. Do you...",
-   "Food_Choices": ["Go towards a coconut tree", "Find something else."],
-   "Food_Outcomes": ["You decide to get a coconut from a tree.","BeachCave"],
+   "Food_Choices": ["GO towards a coconut tree", "FIND something else."],
+   "Food_Answers": ["go", "find"],
+   "Food_Outcomes": ["You decide to get a coconut from a tree. It tasted good, but it'll last you not long.","You look somewhere else.."],
 }
 S1_Scenario_2 = {
-   "Lighthouse": ["After that, you managed to stumble upon an abandoned lighthouse after trekking for a while. Do you..."],
-   "L_Decision":["omaygot"],
+   "Lighthouse": "\nAfter that, you managed to stumble upon a lighthouse after trekking for a while. Do you...",
+   "L_Choices":["Stay at the BOTTOM of the lighthouse.","Stay at the TOP of the lighthouse."],
+   "L_Answers": ["bottom","top"],
+   "L_Outcomes": ["You decide to stay on the bottom of the lighthouse.","You decide to stay on top of the lighthouse."],
+   "L_Outcomes_Extra": ["You decide to sleep since its becoming dark.", "You soon wake up in the morning.", "You then realize you can fix the lighthouse with the toolbox.", "You then realize you can try to fix the lighthouse."],
+   "L_Top": "\nUpon gazing around the views, you barely managed to spot an abandoned plane far away.",
+   
+   #If toolbox is not present
+   "L_Bottom": "\nYou wake up in the middle of the night. You then realize you can try to fix the lighthouse. Do you...",
+   "LBottom_Choices2": ["Try to FIX the lighthouse.","EXPLORE in order to find it."],
+   "LBottom_Answers": ["fix", "explore"],
+   "LBottom_Outcomes": ["You try to fix the lighthouse without the toolbox. However, you were then fatally electrocuted as you fall back and die.", "You decide to explore in order to find the toolbox. Suddenly, you see an unknown entity charging towards you. You tried to dodge as you were then fatally mauled."],
+   
+   "L_Top2_Choices": ["GO "],
 }
 S1_Scenario_3 = {
    
@@ -65,6 +80,11 @@ S1_Scenario_4 = {
 S1_Scenario_5 = {
    
 }   
+Attack_Function = {
+  "Choices": ["ATTACK", "DEFEND", "RUN"],
+  "Attack": ["PUNCH", "KICK", "TACKLE"],
+  "Defend": ["BLOCK", "DODGE", "PARRY"],
+}
                   #"You decide to wait out for longer.", 
                  # "It is getting dark. Do you...",
 
@@ -170,15 +190,6 @@ ENDINGS = ["You have died from starvation. Game Over.",
           "You see what appears to be a group of guards aiming rifles at you. Where did they come from? Game Over",]
           #7
 
-             #["WAIT LONGER, I hope we get rescued very soon...", "Let's LOOK FOR FOOD, I'm starving..."],
-             #
-
-# Available Answers
-
-
-              #["wait longer", "look for food"]
-BEACH_CAVE_ANS = [["go back", "explore", "scavenge"]]
-LIGHTHOUSE_ANS = [["explore", "stay"]]
 #Scenario Numbers and what they represent:
 #1 - 14 = Planewreck Area
 #15 - 29 = Beachcave Area
@@ -191,13 +202,89 @@ LIGHTHOUSE_ANS = [["explore", "stay"]]
 #120 - 139 = Unknown for now
 
 # Functions
-toolbox = "no"
-run = "no"
+toolbox = "no".lower()
+run = "no".lower()
+boar_health = 7
 scenario_stages = 1
-Health = 5
+ending_scenario = "".lower()
+ending = "".lower()
+boarattackoutcome = "".lower()
 
-# --------------------------- INTRO -------------------------------
-#Are you ready to play the game?
+#Boar Attack scenario
+def boarattack():
+  Health = 5
+  boar_health = 7
+  global boarattackoutcome 
+  input("\nYou have encountered a wild boar on your path!")
+  #Your Turn
+  input("What will you do?")
+  while Health >= 0 or boar_health >= 0:
+    choice = input("{} , {} \nDecision Here:".format(Attack_Function["Choices"][0],Attack_Function["Choices"][2])).upper()
+    # Attack
+    if choice == Attack_Function["Choices"][0] or choice == SHORT_OPTIONS[0].upper():
+        input("\nHow will you Attack?")
+        attack = input("{} , {} , {}".format(Attack_Function["Attack"][0],Attack_Function["Attack"][1],Attack_Function["Attack"][2])).upper()
+        # Punch
+        if attack == Attack_Function["Attack"][0] or attack == SHORT_OPTIONS[0].upper():
+          input("You hit the boar in the face, it squeals as blood spews from its face")
+          boar_health = boar_health - 2
+        # Kick
+        elif attack == Attack_Function["Attack"][1] or attack == SHORT_OPTIONS[1].upper():
+          input("You kick the boar on its stomach; it gets sent flying and falls with a loud thud.")
+          boar_health = boar_health - 3
+        # Tackle
+        elif attack == Attack_Function["Attack"][2] or attack == SHORT_OPTIONS[2].upper(): 
+          input("You try to tackle the boar, but you barely had enough power to push it over. It may have fallen unscathed.")
+          boar_health = boar_health - 1 
+    # Run
+    elif choice == Attack_Function["Choices"][2] or choice == SHORT_OPTIONS[2].upper():
+      input("You decided to run, you did not find its worth to fight at all.")
+      break
+    #Boar Turn
+    input("Now the boar will attack you... What will you do?")
+    choice = input("{} , {} \nDecision Here:".format(Attack_Function["Choices"][1],Attack_Function["Choices"][2])).upper()
+    # Defend
+    if choice == Attack_Function["Choices"][1] or choice == SHORT_OPTIONS[1].upper():
+        input("\nHow will you Attack?")
+        defend = input("{} , {} , {}".format(Attack_Function["Defend"][0],Attack_Function["Defend"][1],Attack_Function["Defend"][2])).upper()
+        # Block
+        if defend == Attack_Function["Defend"][0] or defend == SHORT_OPTIONS[0].upper():
+          input("The boar rushes you and you block the attack with your arms. But you werer too weak to stop its attack.")
+          Health = Health - 3
+        # Dodge
+        elif defend == Attack_Function["Defend"][1] or defend == SHORT_OPTIONS[1].upper():
+          input("The boar rushes you, but you predict its movements and dodge it. It still hits and injures your legs.")
+          Health = Health - 1
+        # Parry
+        elif defend == Attack_Function["Defend"][2] or defend == SHORT_OPTIONS[2].upper(): 
+          input("You see the boar rushing you and you try to predict its movements. You try to push it away but it bites your arm.")
+          Health = Health - 2
+    # Run
+    elif choice == Attack_Function["Choices"][2] or choice == SHORT_OPTIONS[2].upper():
+      input("You decided to run, you did not find its worth to fight at all.")
+      break
+    # No outputs
+    else:
+      input("Not a valid answer. Please try again")
+      return
+    input("The boar is at {} Health. You are at {} Health.".format(boar_health,Health))
+    if boar_health < 1 and Health < 1:
+      boarattackoutcome = "lose"
+      break
+    elif boar_health < 1:
+      boarattackoutcome = "win"
+      break
+    elif Health < 1:
+      boarattackoutcome = "lose"
+      break
+    else:
+      continue
+    
+    
+
+
+#---------------------------------------- INTRO --------------------------------------------
+#-------------Are you ready to play the game?-------------
 confirm = input(IntroPrompts["Welcome"][2])
 input(r"""  
     ██████  █    ██  ██▀███   ██▒   █▓ ██▓ ██▒   █▓ ▄▄▄       ██▓        ▒█████    █████▒   ▄▄▄█████▓ ██░ ██ ▓█████     ██▓  ██████  ██▓    ▓█████ 
@@ -210,60 +297,84 @@ input(r"""
   ░  ░  ░   ░░░ ░ ░   ░░   ░      ░░   ▒ ░     ░░    ░   ▒     ░ ░      ░ ░ ░ ▒   ░ ░         ░       ░  ░░ ░   ░       ▒ ░░  ░  ░    ░ ░      ░   
         ░     ░        ░           ░   ░        ░        ░  ░    ░  ░       ░ ░                       ░  ░  ░   ░  ░    ░        ░      ░  ░   ░  ░
                                   ░            ░                                                                                                   """)
+
+    # ---------------------------------------/--------------------------/ PLANEWRECK PHASE \--------------------------\---------------------------------------
 while scenario_stages >= 1 and scenario_stages <= 14:
-    # // PLANEWRECK PHASE \\
   input("{}".format(Intro_Scenario.get("Planewreck")))
   answer = input(QFORMAT_2.format(Intro_Scenario.get("Decision"),Intro_Scenario["Choices"][0],Intro_Scenario["Choices"][1])).lower()
-    # // Stayed at Raft; Now Hungry \\
+  
+    # --------------------------/-------------/ Stayed at Raft \-------------\--------------------------
   if answer == Intro_Scenario["Answers"][0] or answer == SHORT_OPTIONS[0]:
     input("{}".format(Intro_Scenario["Outcomes"][0]))
     scenario_stages = 2
-    while scenario_stages >= 2 and scenario_stages <= 14:
+
+    # --------------------------/-------------/ Now Hungry \-------------\--------------------------
+    while scenario_stages >= 2 and scenario_stages <= 4:
       answer = input(QFORMAT_2.format(S1_Scenario_1.get("Raft"),S1_Scenario_1["R_Choices"][0],S1_Scenario_1["R_Choices"][1])).lower()
-      #Scavenge
+      #--------------------------Stay for longer--------------------------
       if answer == S1_Scenario_1["R_Answers"][0] or answer == SHORT_OPTIONS[0]:
         input("{}".format(S1_Scenario_1["R_Outcomes"][0]))
         scenario_stages = 3
+        #--------------------------Go find food; Starving--------------------------
+        answer = input(QFORMAT_2.format(S1_Scenario_1.get("Raft_2"),S1_Scenario_1["R2_Choices"][0],S1_Scenario_1["R2_Choices"][1])).lower()
+        if answer == S1_Scenario_1["R2_Answers"][1] or answer == SHORT_OPTIONS[1]:
+          input("{}".format(S1_Scenario_1["R2_Outcomes"][1]))
+          scenario_stages = 5
+          #--------------------------Stay for longer; Starving--------------------------
+        elif answer == S1_Scenario_1["R2_Answers"][0] or answer == SHORT_OPTIONS[0]:
+          input("{}".format(S1_Scenario_1["R2_Outcomes"][0]))
+          scenario_stages = 0
+          ending_scenario = "Died from Starvation as you did not look for food..."
+          ending = "Bad Ending.. Better luck next time"
+          break
           
-      #Explore deeper
+      #--------------------------Go find food--------------------------
       elif answer == S1_Scenario_1["R_Answers"][1] or answer == SHORT_OPTIONS[1]:
         input("{}".format(S1_Scenario_1["R_Outcomes"][1]))
         scenario_stages = 4
-        break
-    # Explore into the Island
+        answer = input(QFORMAT_2.format(S1_Scenario_1.get("Food"),S1_Scenario_1["Food_Choices"][0],S1_Scenario_1["Food_Choices"][1])).lower()
+        #--------------------------Coconut Tree--------------------------
+        if answer == S1_Scenario_1["Food_Answers"][0] or answer == SHORT_OPTIONS[0]:
+          input("{}".format(S1_Scenario_1["Food_Outcomes"][0]))
+          scenario_stages = 5
+          #--------------------------Boar Attack--------------------------
+        elif answer == S1_Scenario_1["Food_Answers"][1] or answer == SHORT_OPTIONS[1]:
+          input("{}".format(S1_Scenario_1["Food_Outcomes"][1]))
+          boarattack()
+          
+          
+    #--------------------------Explore into the Island--------------------------
   elif answer == Intro_Scenario["Answers"][1] or answer == SHORT_OPTIONS[1]:
     input("{}".format(Intro_Scenario["Outcomes"][1]))
     scenario_stages = 15
     break
-    # No answer
+
+    #--------------------------No answer--------------------------
   else:
     input("You have not placed a valid answer. Try again.")
 
-
-      
-  
-      
-
-
-    # // BEACH CAVE PHASE \\
+    # ---------------------------------------/--------------------------/ BEACH CAVE PHASE \--------------------------\---------------------------------------
 while scenario_stages >= 15 and scenario_stages <= 29:
   answer = input(QFORMAT_3.format(S1_Scenario_1.get("BC_Decision"),S1_Scenario_1["BC_Choices"][0],S1_Scenario_1["BC_Choices"][1],S1_Scenario_1["BC_Choices"][2])).lower()
-    #Scavenge
+    #--------------------------Scavenge--------------------------
   if answer == S1_Scenario_1["BC_Answers"][0] or answer == SHORT_OPTIONS[0]:
     input("{}".format(S1_Scenario_1["BC_Outcomes"][0]))
     scenario_stages = 16
     break
-    #Explore deeper
+
+    #--------------------------Explore deeper--------------------------
   elif answer == S1_Scenario_1["BC_Answers"][1] or answer == SHORT_OPTIONS[1]:
     input("{}".format(S1_Scenario_1["BC_Outcomes"][1]))
     scenario_stages = 30
     break
-  #Go back to Raft
+
+  #--------------------------Go back to Raft--------------------------
   elif answer == S1_Scenario_1["BC_Answers"][2] or answer == SHORT_OPTIONS[2]:
     input("{}".format(S1_Scenario_1["BC_Outcomes"][2]))
     scenario_stages = 2
     break
-    # No answer
+
+    # -------------No answer-------------
   else:
     input("You have not placed a valid answer. Try again.")
 
@@ -272,3 +383,19 @@ while scenario_stages >= 15 and scenario_stages <= 29:
     # // LIGHTHOUSE PHASE \\
 
 
+
+
+# FInished the Game
+input("\nYou have {}".format(ending_scenario))
+input("You have achieved the {}".format(ending))
+print(r"""  
+    ██████  █    ██  ██▀███   ██▒   █▓ ██▓ ██▒   █▓ ▄▄▄       ██▓        ▒█████    █████▒   ▄▄▄█████▓ ██░ ██ ▓█████     ██▓  ██████  ██▓    ▓█████ 
+  ▒██    ▒  ██  ▓██▒▓██ ▒ ██▒▓██░   █▒▓██▒▓██░   █▒▒████▄    ▓██▒       ▒██▒  ██▒▓██   ▒    ▓  ██▒ ▓▒▓██░ ██▒▓█   ▀    ▓██▒▒██    ▒ ▓██▒    ▓█   ▀ 
+  ░ ▓██▄   ▓██  ▒██░▓██ ░▄█ ▒ ▓██  █▒░▒██▒ ▓██  █▒░▒██  ▀█▄  ▒██░       ▒██░  ██▒▒████ ░    ▒ ▓██░ ▒░▒██▀▀██░▒███      ▒██▒░ ▓██▄   ▒██░    ▒███   
+    ▒   ██▒▓▓█  ░██░▒██▀▀█▄    ▒██ █░░░██░  ▒██ █░░░██▄▄▄▄██ ▒██░       ▒██   ██░░▓█▒  ░    ░ ▓██▓ ░ ░▓█ ░██ ▒▓█  ▄    ░██░  ▒   ██▒▒██░    ▒▓█  ▄ 
+  ▒██████▒▒▒▒█████▓ ░██▓ ▒██▒   ▒▀█░  ░██░   ▒▀█░   ▓█   ▓██▒░██████▒   ░ ████▓▒░░▒█░         ▒██▒ ░ ░▓█▒░██▓░▒████▒   ░██░▒██████▒▒░██████▒░▒████▒
+  ▒ ▒▓▒ ▒ ░░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░   ░ ▐░  ░▓     ░ ▐░   ▒▒   ▓▒█░░ ▒░▓  ░   ░ ▒░▒░▒░  ▒ ░         ▒ ░░    ▒ ░░▒░▒░░ ▒░ ░   ░▓  ▒ ▒▓▒ ▒ ░░ ▒░▓  ░░░ ▒░ ░
+  ░ ░▒  ░ ░░░▒░ ░ ░   ░▒ ░ ▒░   ░ ░░   ▒ ░   ░ ░░    ▒   ▒▒ ░░ ░ ▒  ░     ░ ▒ ▒░  ░             ░     ▒ ░▒░ ░ ░ ░  ░    ▒ ░░ ░▒  ░ ░░ ░ ▒  ░ ░ ░  ░
+  ░  ░  ░   ░░░ ░ ░   ░░   ░      ░░   ▒ ░     ░░    ░   ▒     ░ ░      ░ ░ ░ ▒   ░ ░         ░       ░  ░░ ░   ░       ▒ ░░  ░  ░    ░ ░      ░   
+        ░     ░        ░           ░   ░        ░        ░  ░    ░  ░       ░ ░                       ░  ░  ░   ░  ░    ░        ░      ░  ░   ░  ░
+                                  ░            ░                                                                                                   """)
