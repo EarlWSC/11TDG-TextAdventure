@@ -69,7 +69,7 @@ S1_Scenario_2 = {
    "LBottom_Answers": ["fix", "explore"],
    "LBottom_Outcomes": ["You try to fix the lighthouse without the toolbox. However, you were then fatally electrocuted as you fall back and die.", "You decide to explore in order to find the toolbox. Suddenly, you see an unknown entity charging towards you. You tried to dodge as you were then fatally mauled."],
    
-   "L_Top2_Choices": ["GO "],
+   "L_Top2_Choices": ["GO towar"],
 }
 S1_Scenario_3 = {
    
