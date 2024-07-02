@@ -91,8 +91,8 @@ toolbox = "no".lower()
 hungry = "no".lower()
 run = "no".lower()
 boar_health = 7
-ending_scenario = "unfinished ending. See you when the game is done!".lower()
-ending = "have made it to the unfinished part of our game".lower()
+ending_scenario = "have made it to the unfinished part of our game".lower()
+ending = "unfinished ending. See you when the game is done!".lower()
 boarattackoutcome = "".lower()
 
 #Boar Attack scenario
